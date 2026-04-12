@@ -10,20 +10,23 @@ ALGORITHM = "HS256"
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login")
 
-def get_current_user(token: str = Depends(oauth2_scheme)):
+
+
+def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    db: Session = Depends(lambda: SessionLocal()),
+):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        user_id: int | None = payload.get("user_id")
+        user_id = payload.get("user_id")
         if user_id is None:
             raise HTTPException(status_code=401, detail="无效 token")
     except JWTError:
         raise HTTPException(status_code=401, detail="token 解析失败")
 
-    db: Session = SessionLocal()
     user = db.query(User).filter(User.id == user_id).first()
-    db.close()
-
     if user is None:
         raise HTTPException(status_code=401, detail="用户不存在")
 
     return user
+

@@ -114,10 +114,15 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
   body {
     @apply bg-background text-foreground;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.75),
+        rgba(255, 255, 255, 0.99)),
+      url('/1.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
   }
 }

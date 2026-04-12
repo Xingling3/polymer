@@ -17,14 +17,17 @@ import {
 
 // 菜单项
 const items = [
-    { title: "Login", url: "/login", icon: LogIn },
-    { title: "Register", url: "/register", icon: User },
-    { title: "About", url: "/about", icon: Inbox },
-    { title: "Calendar", url: "/", icon: Calendar },
-    { title: "Predict", url: "/predict", icon: TrendingUp },
-    { title: "Train", url: "/train", icon: Bot },
-    { title: "MyModels", url: "/model", icon: Folder },
-    { title: "Settings", url: "/settings", icon: Settings },
+    { title: "登出", url: "/", icon: LogIn },
+    //{ title: "Register", url: "/register", icon: User },
+    { title: "关于", url: "/about", icon: Inbox },
+    //{ title: "Calendar", url: "/calender", icon: Calendar },
+    { title: "预测", url: "/predict", icon: TrendingUp },
+    { title: "训练", url: "/train", icon: Bot },
+    { title: "MLP 训练", url: "/mlp-train", icon: Bot },
+    { title: "我的模型", url: "/model", icon: Folder },
+    { title: "设置", url: "/settings", icon: Settings },
+    { title: "数据增强", url: "/augment", icon: Folder },
+    { title: "3d模型", url: "/molecule", icon: Folder },
 ];
 
 export function AppSidebar() {

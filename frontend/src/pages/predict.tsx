@@ -16,6 +16,8 @@ import {
     InputGroupInput,
 } from "@/components/ui/input-group"
 import { HistorySheet } from "./HistorySheet";
+import { MoleculeViewer } from "./MoleculeViewer";
+import Image from "@/assets/predict.png";
 
 export default function PolymerPredict() {
     const [smiles, setSmiles] = useState("");
@@ -31,6 +33,7 @@ export default function PolymerPredict() {
 
         setLoading(true);
         try {
+
             const response = await fetch("http://localhost:8000/api/predict", {
                 method: "POST",
                 headers: {
@@ -46,6 +49,20 @@ export default function PolymerPredict() {
             const data = await response.json();
             if (response.ok) {
                 setResult(String(data.result));
+                // 请求 3D 分子
+                const molResponse = await fetch("http://localhost:8000/api/mol3d", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        smiles,
+                    }),
+                });
+
+                const molData = await molResponse.json();
+                setMolBlock(molData.mol_block);
+
             } else {
                 alert(data.detail || "预测失败");
             }
@@ -55,17 +72,39 @@ export default function PolymerPredict() {
             setLoading(false);
         }
     };
+    const [molBlock, setMolBlock] = useState<string | null>(null);
 
     return (
 
-        <div className="p-6 max-w-xl space-y-6">
+        <div className="p-8 max-w-6xl mx-auto space-y-8">
+            <div className="relative w-full overflow-hidden rounded-3xl shadow-2xl">
+
+                {/* 图片 */}
+                <img
+                    src={Image}
+                    alt="Polymer AI Banner"
+                    className="w-full h-[320px] object-cover"
+                />
+
+                {/* 渐变遮罩 */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
+
+                {/* 文字内容 */}
+                <div className="absolute bottom-8 left-8 text-white">
+                    <h1 className="text-4xl font-bold mb-2">
+                        聚合物性质预测
+                    </h1>
+
+                </div>
+
+            </div>
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold">聚合物性质预测平台</h1>
+
                 <HistorySheet />
             </div>
 
             {/* SMILES 输入 + 模型选择 */}
-            <InputGroup className="[--radius:1rem]">
+            <InputGroup className="!bg-white h-14 text-base px-4 shadow-sm">
                 <InputGroupInput
                     placeholder="输入 SMILES 序列，如 C"
                     value={smiles}
@@ -106,6 +145,14 @@ export default function PolymerPredict() {
                     <p className="mt-1">{result}</p>
                 </div>
             )}
+            {molBlock && (
+                <div className="space-y-2">
+                    <h2 className="font-semibold">3D 分子结构</h2>
+                    <MoleculeViewer molBlock={molBlock} />
+                </div>
+            )}
+
+
         </div>
     );
 }

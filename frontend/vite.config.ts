@@ -11,4 +11,10 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      // ✅ 正确：值是完整的 URL 字符串
+      '/api': 'http://localhost:8000',
+    }
+  }
 })

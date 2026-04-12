@@ -2,7 +2,15 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
-
+import {
+    Card,
+    CardAction,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
 export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -28,27 +36,53 @@ export default function Login() {
         } catch (err) {
             setMessage("网络错误");
         }
+
     };
-
+    const handleRegisterNavigate = () => {
+        navigate("/register");
+    };
+    const handleAdminNavigate = () => {
+        navigate("/admin");
+    };
     return (
-        <div className="p-6 max-w-sm mx-auto">
-            <h2 className="text-xl font-bold mb-4">登录</h2>
-            <Input
-                placeholder="用户名"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="mb-2"
-            />
-            <Input
-                placeholder="密码"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mb-2"
-            />
-            <Button onClick={handleSubmit}>登录</Button>
 
-            {message && <p className="mt-2 text-red-500">{message}</p>}
-        </div>
+        <Card className="p-6 max-w-sm mx-auto mt-20">
+            <CardHeader>
+                <CardTitle>登录账号</CardTitle>
+                <CardAction>
+                    <Button
+                        size="sm"
+                        onClick={handleRegisterNavigate}
+                    >
+                        还没有账号？立即注册
+                    </Button>
+                </CardAction>
+            </CardHeader>
+            <CardContent>
+                <Input
+                    placeholder="用户名"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="mb-2"
+                />
+                <Input
+                    placeholder="密码"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="mb-2"
+                />
+            </CardContent>
+            <CardFooter className="flex-col gap-2">
+                <Button onClick={handleSubmit}>登录</Button>
+                <Button
+                    onClick={handleAdminNavigate}
+                    variant="ghost"
+                    className="w-full"
+                >
+                    管理员入口
+                </Button>
+            </CardFooter>
+        </Card>
     );
 }
