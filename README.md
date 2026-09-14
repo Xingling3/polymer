@@ -75,7 +75,10 @@ polymer/
 │   ├── models.py               # 数据模型
 │   ├── mol3d.py                # 三维分子结构生成
 │   ├── GCN/
-│   │   └── predict.py          # GCN 预测接口原型
+│   │   ├── model_GNN.py        # GCN 回归模型定义
+│   │   ├── generate_graph_dataset.py # SMILES 转分子图
+│   │   ├── workflow_test.py    # 五折训练与评估流程
+│   │   └── predict.py          # GCN 预测接口
 │   ├── machine/
 │   │   └── train_model.py      # Morgan 指纹与 MLP 训练
 │   └── strengthen/
@@ -194,4 +197,4 @@ Authorization: Bearer <access_token>
 4. `backend/auth.py` 中的 JWT 密钥为开发值，正式部署前必须改为环境变量。
 5. 当前用户密码以明文形式保存，正式部署前必须使用可靠的密码哈希方案。
 6. 管理后台部分接口尚未启用身份与角色校验，不能直接暴露到公网。
-7. `GCN/predict.py` 当前是预测接口原型，尚未接入正式训练后的图神经网络权重。
+7. GCN 预测需要训练生成的 `.pth.tar` 权重文件；权重和训练日志默认不提交到仓库。
